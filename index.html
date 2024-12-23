@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Clone</title>
+    <title>Orange Cloud Search</title>
     <style>
         body {
             background-color: #202124;
@@ -18,20 +18,29 @@
             font-family: Arial, sans-serif;
         }
         .logo {
-            font-size: 50px;
+            display: flex;
+            align-items: center;
             margin-bottom: 20px;
+        }
+        .logo img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .logo-text {
+            font-size: 50px;
         }
         .search-bar {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
-        .search-bar input {
+        .gcse-search input {
             width: 400px;
             padding: 10px;
             border-radius: 20px;
             border: none;
-            background-color: #303134;
+            background-color: transparent;
             color: white;
         }
         .search-buttons {
@@ -49,13 +58,21 @@
     </style>
 </head>
 <body>
-    <div class="logo">Google</div>
+    <div class="logo">
+        <img src="Resources/My-meme-base.png" alt="Logo">
+        <div class="logo-text">Orange Cloud Search</div>
+    </div>
     <div class="search-bar">
-        <input type="text" placeholder="Search">
+        <!-- Google CSE Search Box -->
+        <div class="gcse-search"></div>
     </div>
     <div class="search-buttons">
         <button>Google Search</button>
         <button>I'm Feeling Lucky</button>
     </div>
+
+    <!-- Include the Google CSE script -->
+    <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
+
 </body>
 </html>
