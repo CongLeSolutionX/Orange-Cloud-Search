@@ -1,5 +1,4 @@
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +7,8 @@
     <title>Orange Cloud Search</title>
     <style>
         body {
-            background: black;
-            color: white;
+            background: linear-gradient(135deg, #1f1f2e, #2c2c54);
+            color: #f0f0f0;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             overflow: hidden;
@@ -22,6 +21,7 @@
             justify-content: center;
             margin-top: 20px;
             color: #ff77ff;
+            text-shadow: 0 0 10px #ff77ff, 0 0 20px #ff77ff;
         }
         .logo img {
             width: 100px;
@@ -47,23 +47,23 @@
         }
         .main-section {
             flex: 3;
-            background-color: rgba(105, 105, 105, 0.8);
+            background-color: rgba(44, 44, 84, 0.8);
             padding: 20px;
             margin-right: 20px;
             box-sizing: border-box;
-            height: 500px; /* added fixed height */
-            overflow-y: auto; /* allow vertical scrolling */
+            height: 500px;
+            overflow-y: auto;
         }
         .gcse-searchresults {
             max-height: 400px;
             overflow-y: auto;
         }
         .gsc-completion-container, .gsc-completion-container * {
-            color: black !important; /* Change autocomplete text color */
+            color: #ff00ff !important; /* Darker neon pink for better contrast */
         }
         .side-section {
             flex: 1;
-            background-color: rgba(176, 176, 176, 0.8);
+            background-color: rgba(44, 44, 84, 0.8);
             height: 300px;
             box-sizing: border-box;
         }
@@ -90,7 +90,7 @@
                 <div class="gcse-searchbox"></div>
                 <div class="gcse-searchresults"></div>
             </div>
-            <!-- Placeholder for side section content -->
+            <!-- Placeholder for side content section -->
             <!-- <div class="side-section"></div> -->
         </div>
     </div>
@@ -124,7 +124,7 @@
                     drops[i] = 0;
                 }
 
-                drops[i] += 0.5; // Slow down by using a smaller increment
+                drops[i] += 0.5;
             });
 
             requestAnimationFrame(draw);
@@ -134,4 +134,3 @@
     </script>
 </body>
 </html>
-```
