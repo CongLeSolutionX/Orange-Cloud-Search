@@ -33,65 +33,6 @@
             justify-content: center;
             margin-bottom: 20px;
         }
-        .gcse-searchbox-only {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .gcse-searchbox-only input {
-            width: 400px;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: #303134;
-            color: #0ff;
-            box-shadow: 0 0 10px #f0f, 0 0 20px #0ff;
-            outline: none;
-            transition: box-shadow 0.3s ease;
-        }
-        .gcse-searchbox-only input:focus {
-            box-shadow: 0 0 15px #ff77ff, 0 0 30px #0ff;
-        }
-        .search-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        .search-buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #303134;
-            color: #0ff;
-            cursor: pointer;
-            box-shadow: 0 0 10px #f0f, 0 0 20px #0ff;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .search-buttons button:hover {
-            background-color: #404040;
-            box-shadow: 0 0 15px #ff77ff, 0 0 30px #0ff;
-        }
-        /* Results Styling */
-        .gcse-searchresults-only {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #282828;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .gcse-searchresults-only .gsc-result {
-            border-bottom: 1px solid #444;
-            padding: 10px 0;
-        }
-        .gcse-searchresults-only .gs-title {
-            color: #4e9ef5;
-            font-size: 18px;
-        }
-        .gcse-searchresults-only .gs-visibleUrl {
-            color: #aaa;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
@@ -100,17 +41,13 @@
         <div class="logo-text">Orange Cloud Search</div>
     </div>
     <div class="search-bar">
-        <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
-        <div class="gcse-searchbox-only"></div>
-    </div>
-
-    <div class="search-buttons">
-        <button>Google Search</button>
-        <button>I'm Feeling Lucky</button>
+        <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886">
+        </script>
+        <div class="gcse-searchbox"></div>
     </div>
 
     <!-- Results Section -->
-    <div class="gcse-searchresults-only"></div>
+    <div class="gcse-searchresults"></div>
 
 </body>
 </html>
