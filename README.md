@@ -7,7 +7,9 @@
 This project is part of an ecosystem integrating AI agents into various tools on web app and mobile app. This project is an web app interface that allow you to connect ans customize Google Programmable Search engine in the backend. 
 This project will integrate with Vertex AI Search https://cloud.google.com/enterprise-search for better search capability soon.
 
-This project will link to an iOS client app at this link. Follow that iOS client app version if you are interesting to integrate Google Progtammable Search API and AI agents with iOS mobiple app.
+This project will link to an iOS client app at this link. Follow that iOS client app version if you are interesting to integrate Google Progtammable Search API and AI agents with iOS mobile app.
+
+
 
 ## Features
 
