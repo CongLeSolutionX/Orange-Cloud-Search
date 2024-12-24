@@ -13,6 +13,12 @@ To provide a clear understanding of the code's complexities, functionalities, an
 This diagram outlines the key components of the HTML page, highlighting the layout and main features.
 
 ```mermaid
+---
+config:
+  layout: elk
+  look: handDrawn
+  theme: dark
+---
 graph TD
     A[HTML Document] --> B[Head Section]
     A --> C[Body Section]
@@ -33,6 +39,12 @@ graph TD
 Illustrates how the theme switching mechanism is designed and how it updates the document with the selected theme.
 
 ```mermaid
+---
+config:
+  layout: elk
+  look: handDrawn
+  theme: dark
+---
 flowchart TD
     A[User Clicks Theme Name] --> B[Switch Theme Function]
     B --> C{Check Current Theme}
@@ -51,6 +63,12 @@ flowchart TD
 The structure capturing how the matrix effect background is generated using JavaScript and Canvas API.
 
 ```mermaid
+---
+config:
+  layout: elk
+  look: handDrawn
+  theme: dark
+---
 sequenceDiagram
     participant User
     participant HTML as HTML Document
@@ -64,3 +82,6 @@ sequenceDiagram
         JS->>JS: Draw to Canvas
     end
 ```
+
+---
+

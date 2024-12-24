@@ -50,6 +50,12 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 Here’s what we’re potentially working on next:
 
 ```mermaid
+---
+config:
+  layout: elk
+  look: handDrawn
+  theme: dark
+---
 graph LR
     A[Current Page Functionality]
     A --> B[Improved Accessibility]
