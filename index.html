@@ -22,7 +22,8 @@
             background-color: rgba(44, 44, 84, 0.8);
         }
         .gsc-completion-container, .gsc-completion-container * {
-            color: #ff00ff !important;
+            color: #ff77ff !important;
+            background-color: rgba(31, 31, 46, 0.9);
         }
     </style>
     <style>
@@ -120,6 +121,16 @@
         </div>
     </div>
     <script>
+        // Function to get current theme color for matrix effect
+        function getMatrixColor() {
+            const themeStyle = document.getElementById('theme-style');
+            if (themeStyle.innerHTML.includes('#1f1f2e')) {
+                return '#0f0'; // Default theme color
+            } else {
+                return '#ff77ff'; // Dark theme color
+            }
+        }
+
         // Initialization of canvas for matrix effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
@@ -145,7 +156,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#0f0'; // Green text for matrix effect
+            ctx.fillStyle = getMatrixColor(); // Dynamic text color based on current theme
             ctx.font = fontSize + 'px monospace';
 
             // Drawing each character drop
@@ -190,6 +201,7 @@
                 }
                 .gsc-completion-container, .gsc-completion-container * {
                     color: #0f0 !important;
+                    background-color: rgba(0, 0, 0, 0.9);
                 }`;
             } else {
                 // Original theme
@@ -207,8 +219,10 @@
                 }
                 .gsc-completion-container, .gsc-completion-container * {
                     color: #ff00ff !important;
+                    background-color: rgba(31, 31, 46, 0.9);
                 }`;
             }
+            ctx.fillStyle = getMatrixColor(); // Update canvas text color on theme toggle
         }
     </script>
 </body>
