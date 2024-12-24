@@ -74,10 +74,15 @@
             flex: 1;
             height: 300px;
             box-sizing: border-box;
-            background-color: rgba(44, 44, 84, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid #0f0;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;
+            transition: background-color 0.3s;
+            cursor: pointer;
         }
         canvas {
             position: fixed;
@@ -89,11 +94,13 @@
         }
         .theme-toggle {
             z-index: 11;
-            background: #333;
-            color: #fff;
+            background: none;
+            color: #0f0;
             border: none;
-            padding: 10px;
-            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 0 5px #0f0;
         }
     </style>
 </head>
@@ -202,6 +209,11 @@
                 .gsc-completion-container, .gsc-completion-container * {
                     color: #0f0 !important;
                     background-color: rgba(0, 0, 0, 0.9);
+                }
+                .side-section {
+                    background-color: rgba(0, 0, 0, 0.8);
+                    border: 1px solid #0f0;
+                    box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;
                 }`;
             } else {
                 // Original theme
@@ -220,9 +232,13 @@
                 .gsc-completion-container, .gsc-completion-container * {
                     color: #ff00ff !important;
                     background-color: rgba(31, 31, 46, 0.9);
+                }
+                .side-section {
+                    background-color: rgba(44, 44, 84, 0.8);
+                    border: 1px solid #ff77ff;
+                    box-shadow: 0 0 10px #ff77ff, 0 0 20px #ff77ff inset;
                 }`;
             }
-            ctx.fillStyle = getMatrixColor(); // Update canvas text color on theme toggle
         }
     </script>
 </body>
