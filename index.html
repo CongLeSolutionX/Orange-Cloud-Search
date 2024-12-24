@@ -4,30 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orange Cloud Search</title>
-    <!-- Theme styles for overall look and feel of the page -->
-    <style id="theme-style">
-        /* Theme styles */
+    <style>
+        /* Default styles applied regardless of theme */
         body {
-            background: linear-gradient(135deg, #1f1f2e, #2c2c54);
-            color: #f0f0f0;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             overflow: hidden;
         }
-        .logo {
-            color: #ff77ff;
-            text-shadow: 0 0 10px #ff77ff, 0 0 20px #ff77ff;
-        }
-        .main-section {
-            background-color: rgba(44, 44, 84, 0.8);
-        }
-        .gsc-completion-container, .gsc-completion-container * {
-            color: #ff77ff !important;
-            background-color: rgba(31, 31, 46, 0.9);
-        }
-    </style>
-    <style>
-        /* Fixed UI styles for layout and positioning */
         .logo {
             position: relative;
             z-index: 10;
@@ -56,7 +39,6 @@
             display: flex;
             width: 100%;
             max-width: 1000px;
-            color: #f4f4f4;
         }
         .main-section {
             flex: 3;
@@ -75,14 +57,21 @@
             height: 300px;
             box-sizing: border-box;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid #0f0;
-            border-radius: 12px;
-            box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;
-            transition: background-color 0.3s;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .theme-name {
+            margin: 10px;
+            padding: 10px;
             cursor: pointer;
+            background: #444;
+            color: #fff;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         canvas {
             position: fixed;
@@ -92,50 +81,141 @@
             height: 100%;
             z-index: 1;
         }
-        .theme-toggle {
-            z-index: 11;
-            background: none;
-            color: #0f0;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            text-shadow: 0 0 5px #0f0;
-        }
     </style>
 </head>
 <body>
-    <!-- Canvas element for background animation -->
     <canvas id="matrix"></canvas>
-    <!-- Logo section including an image and text -->
     <div class="logo">
         <img src="Resources/My-meme-base.png" alt="Logo">
         <div class="logo-text">Orange Cloud Search</div>
     </div>
     <div class="container">
-        <!-- Main content area containing the search box and results -->
         <div class="content">
             <div class="main-section">
-                <!-- Google Custom Search Engine integration -->
                 <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
                 <div class="gcse-searchbox"></div>
                 <div class="gcse-searchresults"></div>
             </div>
-            <!-- Sidebar section containing a theme toggle button -->
-            <div class="side-section">
-                <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
-            </div>
+            <div class="side-section"></div>
         </div>
     </div>
     <script>
+        /** Theme Definitions **/
+
+        // Define themes as objects with associated styles
+        const themes = {
+            'Golden Hour': {
+                bodyBg: 'linear-gradient(135deg, #ffcc70, #ff9966)',
+                textColor: '#fff5e6',
+                logoColor: '#ff6600',
+                logoShadow: '0 0 10px #ff6600, 0 0 20px #ff6600',
+                mainSectionBg: 'rgba(255, 204, 112, 0.8)',
+                sideSectionBg: 'rgba(255, 204, 112, 0.8)',
+                sideSectionBorder: '#ff6600',
+                gscCompletionTextColor: '#ffffff',
+                gscCompletionBg: '#663300',
+                gscCompletionHighlightBg: '#ffd700',
+                gscCompletionHighlightTextColor: '#000'
+            },
+            'Midnight': {
+                bodyBg: 'black',
+                textColor: '#ffa500',
+                logoColor: '#ffaa77',
+                logoShadow: 'none',
+                mainSectionBg: 'rgba(0, 0, 0, 0.8)',
+                sideSectionBg: 'rgba(0, 0, 0, 0.8)',
+                sideSectionBorder: '#ffa500',
+                gscCompletionTextColor: '#ffffff',
+                gscCompletionBg: '#333333',
+                gscCompletionHighlightBg: '#005f73',
+                gscCompletionHighlightTextColor: '#fff'
+            },
+            'Synth Wave': {
+                bodyBg: 'linear-gradient(135deg, #8e2de2, #4a00e0)',
+                textColor: '#ff00ff',
+                logoColor: '#00ffff',
+                logoShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff',
+                mainSectionBg: 'rgba(70, 0, 140, 0.8)',
+                sideSectionBg: 'rgba(70, 0, 140, 0.8)',
+                sideSectionBorder: '#ff00ff',
+                gscCompletionTextColor: '#ffffff',
+                gscCompletionBg: '#331144',
+                gscCompletionHighlightBg: '#ff1493',
+                gscCompletionHighlightTextColor: '#000'
+            },
+            'Matrix': {
+                bodyBg: 'black',
+                textColor: '#00ff00',
+                logoColor: '#00ff00',
+                logoShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
+                mainSectionBg: 'rgba(0, 0, 0, 0.8)',
+                sideSectionBg: 'rgba(0, 0, 0, 0.8)',
+                sideSectionBorder: '#00ff00',
+                gscCompletionTextColor: '#00ff00',
+                gscCompletionBg: '#001a00',
+                gscCompletionHighlightBg: '#003300',
+                gscCompletionHighlightTextColor: '#ffffff'
+            }
+        };
+        let currentTheme = 'Golden Hour';
+
+        // Apply theme by selecting its properties and rendering them
+        function applyTheme(theme) {
+            document.body.style.background = theme.bodyBg;
+            document.body.style.color = theme.textColor;
+            
+            const logo = document.querySelector('.logo-text');
+            logo.style.color = theme.logoColor;
+            logo.style.textShadow = theme.logoShadow;
+
+            const mainSection = document.querySelector('.main-section');
+            mainSection.style.backgroundColor = theme.mainSectionBg;
+
+            const sideSection = document.querySelector('.side-section');
+            sideSection.style.backgroundColor = theme.sideSectionBg;
+            sideSection.style.border = `2px solid ${theme.sideSectionBorder}`;
+
+            const gscContainer = document.querySelector('.gsc-completion-container');
+            if (gscContainer) {
+                gscContainer.style.color = theme.gscCompletionTextColor;
+                gscContainer.style.backgroundColor = theme.gscCompletionBg;
+            }
+
+            // Apply highlight styles for better readability
+            const highlights = document.querySelectorAll('.gsc-completion-container .gsc-completion-selected');
+            highlights.forEach(highlight => {
+                highlight.style.backgroundColor = theme.gscCompletionHighlightBg;
+                highlight.style.color = theme.gscCompletionHighlightTextColor;
+            });
+        }
+
+        // Create clickable theme names and append them to the side section
+        function setupThemeSwitcher() {
+            const sideSection = document.querySelector('.side-section');
+            Object.keys(themes).forEach(themeName => {
+                const themeElement = document.createElement('div');
+                themeElement.className = 'theme-name';
+                themeElement.innerText = themeName;
+                themeElement.onclick = () => switchTheme(themeName);
+                sideSection.appendChild(themeElement);
+            });
+        }
+
+        // Switch theme by updating the current theme and applying new styles
+        function switchTheme(themeName) {
+            currentTheme = themeName;
+            applyTheme(themes[currentTheme]);
+        }
+
+        /** Initial setup and matrix effect **/
+
+        // Initial setup
+        applyTheme(themes[currentTheme]);
+        setupThemeSwitcher();
+
         // Function to get current theme color for matrix effect
         function getMatrixColor() {
-            const themeStyle = document.getElementById('theme-style');
-            if (themeStyle.innerHTML.includes('#1f1f2e')) {
-                return '#0f0'; // Default theme color
-            } else {
-                return '#ff77ff'; // Dark theme color
-            }
+            return themes[currentTheme].logoColor;
         }
 
         // Initialization of canvas for matrix effect
@@ -148,17 +228,13 @@
 
         // Array of characters for the matrix effect
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        const fontSize = 16; // Font size for the matrix characters
-        const columns = canvas.width / fontSize; // Number of columns based on canvas width
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
 
         // Array to hold the 'y' position of the drops for each column
         const drops = Array.from({ length: columns }).fill(1);
 
-        /** 
-         * Draw function for animating the matrix effect
-         * Fills canvas with slightly transparent black to fade previous frame, 
-         * then draws characters at the top of each column
-         */
+        // Draw function for animating the matrix effect
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -166,80 +242,22 @@
             ctx.fillStyle = getMatrixColor(); // Dynamic text color based on current theme
             ctx.font = fontSize + 'px monospace';
 
-            // Drawing each character drop
             drops.forEach((y, i) => {
                 const text = letters[Math.floor(Math.random() * letters.length)];
                 ctx.fillText(text, i * fontSize, y * fontSize);
 
-                // Reset drop position if it goes off the screen
                 if (y * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
 
-                // Move the drop down
                 drops[i] += 0.5;
             });
 
-            requestAnimationFrame(draw); // Recursive call to animate
+            requestAnimationFrame(draw);
         }
 
         // Initial call to start the animation
         draw();
-
-        /** 
-         * Toggle theme function
-         * Changes the color scheme of the page on button click
-         */
-        function toggleTheme() {
-            const themeStyle = document.getElementById('theme-style');
-            if (themeStyle.innerHTML.includes('#1f1f2e')) {
-                // Dark theme
-                themeStyle.innerHTML = `
-                body {
-                    background: black;
-                    color: #0f0;
-                }
-                .logo {
-                    color: #0f0;
-                    text-shadow: none;
-                }
-                .main-section {
-                    background-color: rgba(0, 0, 0, 0.8);
-                }
-                .gsc-completion-container, .gsc-completion-container * {
-                    color: #0f0 !important;
-                    background-color: rgba(0, 0, 0, 0.9);
-                }
-                .side-section {
-                    background-color: rgba(0, 0, 0, 0.8);
-                    border: 1px solid #0f0;
-                    box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;
-                }`;
-            } else {
-                // Original theme
-                themeStyle.innerHTML = `
-                body {
-                    background: linear-gradient(135deg, #1f1f2e, #2c2c54);
-                    color: #f0f0f0;
-                }
-                .logo {
-                    color: #ff77ff;
-                    text-shadow: 0 0 10px #ff77ff, 0 0 20px #ff77ff;
-                }
-                .main-section {
-                    background-color: rgba(44, 44, 84, 0.8);
-                }
-                .gsc-completion-container, .gsc-completion-container * {
-                    color: #ff00ff !important;
-                    background-color: rgba(31, 31, 46, 0.9);
-                }
-                .side-section {
-                    background-color: rgba(44, 44, 84, 0.8);
-                    border: 1px solid #ff77ff;
-                    box-shadow: 0 0 10px #ff77ff, 0 0 20px #ff77ff inset;
-                }`;
-            }
-        }
     </script>
 </body>
 </html>
