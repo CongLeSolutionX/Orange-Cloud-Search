@@ -11,6 +11,7 @@
             margin: 0;
             overflow: hidden;
         }
+
         .logo {
             position: relative;
             z-index: 10;
@@ -33,7 +34,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: white;
+            color: white; /* This color is dynamically set by theme */
         }
         .content {
             display: flex;
@@ -67,8 +68,8 @@
             margin: 10px;
             padding: 10px;
             cursor: pointer;
-            background: #444;
-            color: #fff;
+            background: #444; /* Default theme element - should reflect selected theme */
+            color: #fff;     /* Default text color, dynamically set */
             border-radius: 5px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -84,14 +85,20 @@
     </style>
 </head>
 <body>
+    <!-- Canvas background for matrix effect -->
     <canvas id="matrix"></canvas>
+    
+    <!-- Logo section -->
     <div class="logo">
         <img src="Resources/My-meme-base.png" alt="Logo">
         <div class="logo-text">Orange Cloud Search</div>
     </div>
+
+    <!-- Main container -->
     <div class="container">
         <div class="content">
             <div class="main-section">
+                <!-- Google Custom Search Engine integration -->
                 <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
                 <div class="gcse-searchbox"></div>
                 <div class="gcse-searchresults"></div>
@@ -99,11 +106,13 @@
             <div class="side-section"></div>
         </div>
     </div>
+
     <script>
         /** Theme Definitions **/
 
-        // Define themes as objects with associated styles
+        // Define themes as objects with respective styling properties
         const themes = {
+            // Golden Hour theme settings
             'Golden Hour': {
                 bodyBg: 'linear-gradient(135deg, #ffd180, #ff8a80)',
                 textColor: '#f7f1e3',
@@ -117,6 +126,7 @@
                 gscCompletionHighlightBg: '#ff7043',
                 gscCompletionHighlightTextColor: '#000'
             },
+            // Midnight theme settings
             'Midnight': {
                 bodyBg: 'black',
                 textColor: '#ffa500',
@@ -130,6 +140,7 @@
                 gscCompletionHighlightBg: '#005f73',
                 gscCompletionHighlightTextColor: '#fff'
             },
+            // Synth Wave theme settings
             'Synth Wave': {
                 bodyBg: 'linear-gradient(135deg, #8e2de2, #4a00e0)',
                 textColor: '#ff00ff',
@@ -143,6 +154,7 @@
                 gscCompletionHighlightBg: '#ff1493',
                 gscCompletionHighlightTextColor: '#000'
             },
+            // Matrix theme settings
             'Matrix': {
                 bodyBg: 'black',
                 textColor: '#00ff00',
@@ -155,15 +167,31 @@
                 gscCompletionBg: '#001a00',
                 gscCompletionHighlightBg: '#003300',
                 gscCompletionHighlightTextColor: '#ffffff'
+            },
+            // Miami Vibe theme settings
+            'Miami Vibe': {
+                bodyBg: 'linear-gradient(135deg, #50c9c3, #96deda)',
+                textColor: '#ff69b4',
+                logoColor: '#ff1493',
+                logoShadow: '0 0 10px #ff1493, 0 0 20px #ff1493',
+                mainSectionBg: 'rgba(80, 201, 195, 0.8)',
+                sideSectionBg: 'rgba(80, 201, 195, 0.8)',
+                sideSectionBorder: '#ff1493',
+                gscCompletionTextColor: '#ffffff',
+                gscCompletionBg: '#009688',
+                gscCompletionHighlightBg: '#ffcccb',
+                gscCompletionHighlightTextColor: '#000'
             }
         };
+
+        // Default theme
         let currentTheme = 'Golden Hour';
 
-        // Apply theme by selecting its properties and rendering them
+        // Apply selected theme styling
         function applyTheme(theme) {
             document.body.style.background = theme.bodyBg;
             document.body.style.color = theme.textColor;
-            
+
             const logo = document.querySelector('.logo-text');
             logo.style.color = theme.logoColor;
             logo.style.textShadow = theme.logoShadow;
@@ -189,10 +217,11 @@
             });
         }
 
-        // Create clickable theme names and append them to the side section
+        // Setup clickable theme selector interface
         function setupThemeSwitcher() {
             const sideSection = document.querySelector('.side-section');
             Object.keys(themes).forEach(themeName => {
+                // Create clickable element for each theme
                 const themeElement = document.createElement('div');
                 themeElement.className = 'theme-name';
                 themeElement.innerText = themeName;
@@ -201,7 +230,7 @@
             });
         }
 
-        // Switch theme by updating the current theme and applying new styles
+        // Update current theme and apply new styles
         function switchTheme(themeName) {
             currentTheme = themeName;
             applyTheme(themes[currentTheme]);
@@ -209,37 +238,37 @@
 
         /** Initial setup and matrix effect **/
 
-        // Initial setup
+        // Initial theme application and setup the theme switcher
         applyTheme(themes[currentTheme]);
         setupThemeSwitcher();
 
-        // Function to get current theme color for matrix effect
+        // Function returns the current theme color for canvas text effect
         function getMatrixColor() {
             return themes[currentTheme].logoColor;
         }
 
-        // Initialization of canvas for matrix effect
+        // Initialize canvas for matrix falling effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas size to full window dimensions
+        // Set canvas dimensions to cover full window size
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Array of characters for the matrix effect
+        // Characters used in matrix effect
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 16;
         const columns = canvas.width / fontSize;
 
-        // Array to hold the 'y' position of the drops for each column
+        // Initialize array to track drop positions for each column
         const drops = Array.from({ length: columns }).fill(1);
 
-        // Draw function for animating the matrix effect
+        // Function to render matrix effect
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Slight clearing effect to create trail effect
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = getMatrixColor(); // Dynamic text color based on current theme
+            ctx.fillStyle = getMatrixColor(); // Set text color based on current theme
             ctx.font = fontSize + 'px monospace';
 
             drops.forEach((y, i) => {
@@ -253,10 +282,11 @@
                 drops[i] += 0.5;
             });
 
+            // Recursively call draw function for continuous animation
             requestAnimationFrame(draw);
         }
 
-        // Initial call to start the animation
+        // Start the matrix display animation
         draw();
     </script>
 </body>
