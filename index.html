@@ -6,11 +6,12 @@
     <title>Orange Cloud Search</title>
     <style>
         /* Default styles applied regardless of theme */
-        body {
+        /* Removed default background and color from here to avoid conflict */
+        /* body {
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             overflow: hidden;
-        }
+        } */
 
         .logo {
             position: relative;
@@ -34,7 +35,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: white; /* This color is dynamically set by theme */
+            /* Removed: color: white; To be set by the theme */
         }
         .content {
             display: flex;
@@ -65,15 +66,14 @@
             padding: 20px;
         }
         .theme-name {
-            margin: 10px;
-            padding: 10px;
-            cursor: pointer;
-            background: #444; /* Default theme element - should reflect selected theme */
-            color: #fff;     /* Default text color, dynamically set */
-            border-radius: 5px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
+        margin: 10px;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        /* Background and color to be set dynamically by JS */
+    }
         canvas {
             position: fixed;
             top: 0;
@@ -152,7 +152,7 @@
                 gscCompletionTextColor: '#ffffff',
                 gscCompletionBg: '#331144',
                 gscCompletionHighlightBg: '#ff1493',
-                gscCompletionHighlightTextColor: '#000'
+                gscCompletionHighlightTextColor: '#02100'
             },
             // Matrix theme settings
             'Matrix': {
@@ -202,6 +202,13 @@
             const sideSection = document.querySelector('.side-section');
             sideSection.style.backgroundColor = theme.sideSectionBg;
             sideSection.style.border = `2px solid ${theme.sideSectionBorder}`;
+
+            // Update theme names to reflect current theme
+            const themeNames = document.querySelectorAll('.theme-name');
+            themeNames.forEach(themeName => {
+            themeName.style.background = theme.mainSectionBg;
+            themeName.style.color = theme.textColor;
+            });
 
             const gscContainer = document.querySelector('.gsc-completion-container');
             if (gscContainer) {
