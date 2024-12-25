@@ -53,6 +53,7 @@
             font-weight: bold;
             color: #4285f4;
             display: block;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
         .search-container {
@@ -139,6 +140,7 @@
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 1;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .theme-buttons {
@@ -199,74 +201,66 @@
             'Golden Hour': {
                 bodyBg: 'linear-gradient(135deg, #ffd180, #ff8a80)',
                 textColor: '#202124',
-                showSearch: true,
-                showAnimation: true
+                settingsBg: '#ff5722',
+                settingsTextColor: '#ffffff',
+                logoColor: '#ff5722',
+                logoShadow: '0 0 10px #ff3d00, 0 0 20px #ff3d00'
             },
             'Midnight': {
                 bodyBg: 'black',
                 textColor: '#ffa500',
-                showSearch: true,
-                showAnimation: true
+                settingsBg: '#ffa500',
+                settingsTextColor: '#000000',
+                logoColor: '#ffaa77',
+                logoShadow: 'none'
             },
             'Synth Wave': {
                 bodyBg: 'linear-gradient(135deg, #8e2de2, #4a00e0)',
-                textColor: '#ffffff',
-                showSearch: true,
-                showAnimation: true
+                textColor: '#ff00ff',
+                settingsBg: '#ff00ff',
+                settingsTextColor: '#000000',
+                logoColor: '#00ffff',
+                logoShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff'
             },
             'Matrix': {
                 bodyBg: 'black',
                 textColor: '#00ff00',
-                showSearch: true,
-                showAnimation: true
+                settingsBg: '#00ff00',
+                settingsTextColor: '#000000',
+                logoColor: '#00ff00',
+                logoShadow: '0 0 10px #00ff00, 0 0 20px #00ff00'
             },
             'Miami Vibe': {
                 bodyBg: 'linear-gradient(135deg, #50c9c3, #96deda)',
-                textColor: '#202124',
-                showSearch: true,
-                showAnimation: true
+                textColor: '#ff69b4',
+                settingsBg: '#ff1493',
+                settingsTextColor: '#ffffff',
+                logoColor: '#ff1493',
+                logoShadow: '0 0 10px #ff1493, 0 0 20px #ff1493'
             },
             'Google Clone': {
                 bodyBg: '#ffffff',
                 textColor: '#202124',
-                showSearch: true,
-                showAnimation: false
+                settingsBg: '#f0f0f0',
+                settingsTextColor: '#202124',
+                logoColor: '#4285f4',
+                logoShadow: '0 1px 2px rgba(0,0,0,0.1)'
             }
         };
 
-        const fakeDatabase = [
-            "Apple pie recipe",
-            "Banana smoothie",
-            "Cherry blossom festival",
-            "Date night ideas",
-            "Electric cars future",
-            "Famous landmarks to visit",
-            "Gourmet food recipes",
-            "Healthy eating tips",
-            "Interior design trends",
-            "Japanese sushi making"
-        ];
+        let currentTheme = 'Google Clone';
 
-        function switchTheme(themeName) {
-            const theme = themes[themeName];
+        function applyTheme(theme) {
             document.body.style.background = theme.bodyBg;
             document.body.style.color = theme.textColor;
-            const searchContainer = document.getElementById('search-container');
-            const results = document.getElementById('results');
-            const canvas = document.getElementById('matrix');
-            
-            document.documentElement.style.setProperty('--text-color', theme.textColor);
 
-            if (theme.showAnimation) {
-                document.body.style.animation = 'gradient 15s ease infinite';
-                canvas.style.display = 'block';
-            } else {
-                document.body.style.animation = 'none';
-                canvas.style.display = 'none';
-            }
-            
-            searchContainer.style.display = theme.showSearch ? 'flex' : 'none';
-            results.style.display = theme.showSearch ? 'block' : 'none';
+            const logo = document.querySelector('.logo');
+            logo.style.color = theme.logoColor;
+            logo.style.textShadow = theme.logoShadow;
+
+            const toggleButton = document.getElementById('toggle-button');
+            toggleButton.style.backgroundColor = theme.settingsBg;
+            toggleButton.style.color = theme.settingsTextColor;
         }
 
         function toggleThemeButtons() {
@@ -274,32 +268,31 @@
             themeButtons.style.display = themeButtons.style.display === 'none' || themeButtons.style.display === '' ? 'flex' : 'none';
         }
 
+        function switchTheme(themeName) {
+            currentTheme = themeName;
+            applyTheme(themes[currentTheme]);
+        }
+
+        applyTheme(themes[currentTheme]);
+
         function showResults(event) {
             const results = document.getElementById('results');
             const searchText = event.target.value.toLowerCase();
             if (searchText) {
-                const filteredResults = fakeDatabase.filter(item => item.toLowerCase().includes(searchText));
-                if (filteredResults.length > 0) {
-                    results.style.display = 'block';
-                    results.innerHTML = filteredResults.map(item => `<div class="result-item">${item}</div>`).join('');
-                } else {
-                    results.innerHTML = '<div class="result-item">No results found</div>';
-                }
+                results.innerHTML = '<div class="result-item">Sample Result 1</div><div class="result-item">Sample Result 2</div>'; 
+                results.style.display = 'block';
             } else {
                 results.style.display = 'none';
             }
         }
 
         function search() {
-            // In a real-world scenario, you would perform a search with an API call here
             alert('Search executed');
         }
 
-        // Setup matrix effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas size to match the window
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -312,7 +305,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#00ff00';
+            ctx.fillStyle = themes[currentTheme].logoColor;
             ctx.font = `${fontSize}px monospace`;
 
             drops.forEach((y, i) => {
@@ -330,9 +323,6 @@
         }
         
         draw();
-
-        // Initially apply a default theme
-        switchTheme('Golden Hour');
     </script>
 </body>
 </html>
