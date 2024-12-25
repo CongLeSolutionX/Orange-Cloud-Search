@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <!-- Metadata and responsive settings -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Theme Search</title>
     <style>
+        /* General page style */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -19,13 +22,23 @@
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
         }
-        
+
+        /* Gradient animation */
         @keyframes gradient {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
+        /* Canvas for background animation */
         canvas {
             position: fixed;
             top: 0;
@@ -35,6 +48,7 @@
             z-index: 0;
         }
 
+        /* Logo container style */
         .logo-container {
             display: flex;
             align-items: center;
@@ -42,92 +56,87 @@
             margin-bottom: 20px;
         }
 
+        /* Logo image style */
         .logo-container img {
             width: 50px;
             height: 50px;
             margin-right: 10px;
         }
 
+        /* Logo text style */
         .logo {
             font-size: 50px;
             font-weight: bold;
-            color: #4285f4;
+            color: #ffca8a;
             display: block;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
-        
+
+        /* Search container style */
         .search-container {
             flex-direction: column;
             align-items: center;
             width: 100%;
             max-width: 600px;
             margin-top: 20px;
-            z-index: 1;
+            z-index: 2;
         }
-        
-        .search-box {
-            width: 100%;
+
+        /* Search box style */
+        .gcse-searchbox {
             display: flex;
-            align-items: center;
-            border: 1px solid #dfe1e5;
-            border-radius: 24px;
-            padding: 8px 12px;
-            box-shadow: none;
-            transition: box-shadow 0.2s;
-            z-index: 2;
-            background-color: #fff;
-        }
-        
-        .search-box:focus-within {
-            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-        }
-        
-        .search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            z-index: 2;
-        }
-        
-        .search-button {
-            border: none;
-            background-color: #f8f9fa;
-            padding: 8px 16px;
-            margin-left: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 2;
-        }
-        
-        .search-button:hover {
-            background-color: #e8e8e8;
-        }
-
-        #results {
-            background: #fff;
-            color: #202124;
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            overflow-y: auto;
-            max-height: 200px;
-            display: none;
-        }
-
-        .result-item {
+            border: 1px solid #ccc;
+            border-radius: 40px;
             padding: 10px;
-            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 100%;
+            position: relative;
         }
 
-        .result-item:last-child {
-            border-bottom: none;
+        /* Search input style */
+        .gsc-input {
+            border: none;
+            flex: 1;
+            font-size: 16px;
+            outline: none;
+            padding-left: 20px;
         }
 
+        /* Search button style */
+        .gsc-search-button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Search button hover effect */
+        .gsc-search-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Search result box style */
+        .gcse-searchresults {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 50%;
+            max-height: 400px;
+            /* overflow-y: auto; */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #fff;
+            z-index: 3;
+            padding: 10px;
+        }
+
+        /* Settings button style */
         #toggle-button {
             position: absolute;
             top: 20px;
@@ -143,6 +152,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* Theme button container style */
         .theme-buttons {
             display: none;
             flex-direction: column;
@@ -157,7 +167,8 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
-        
+
+        /* Individual theme button style */
         .theme-name {
             margin: 5px;
             padding: 5px;
@@ -169,25 +180,38 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* Theme button hover effect */
         .theme-name:hover {
             background: #e0e0e0;
         }
     </style>
 </head>
+
 <body>
+    <!-- Animated background canvas -->
     <canvas id="matrix"></canvas>
+
+    <!-- Logo section -->
     <div class="logo-container">
         <img src="Resources/My-meme-base.png" alt="Logo">
-        <div class="logo" id="logo">Google Clone</div>
+        <div class="logo" id="logo">Orange Cloud Search</div>
     </div>
+
+    <!-- Search container -->
     <div class="search-container" id="search-container">
-        <div class="search-box">
-            <input type="text" class="search-input" placeholder="Search Google or type a URL" oninput="showResults(event)">
-            <button class="search-button" onclick="search()">Google Search</button>
+        <!-- Google Custom Search Engine Integration -->
+        <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
+        <div class="gcse-searchbox">
+            <input type="text" class="gsc-input" placeholder="Search Google or type a URL">
+            <button class="gsc-search-button">OC Search</button>
         </div>
-        <div id="results"></div>
+        <div class="gcse-searchresults"></div>
     </div>
+
+    <!-- Settings and theme toggle button -->
     <button id="toggle-button" onclick="toggleThemeButtons()">Settings</button>
+
+    <!-- Theme selection buttons -->
     <div class="theme-buttons" id="theme-buttons">
         <div class="theme-name" onclick="switchTheme('Golden Hour')">Golden Hour</div>
         <div class="theme-name" onclick="switchTheme('Midnight')">Midnight</div>
@@ -196,7 +220,9 @@
         <div class="theme-name" onclick="switchTheme('Miami Vibe')">Miami Vibe</div>
         <div class="theme-name" onclick="switchTheme('Google Clone')">Google Clone</div>
     </div>
+
     <script>
+        // Theme settings
         const themes = {
             'Golden Hour': {
                 bodyBg: 'linear-gradient(135deg, #ffd180, #ff8a80)',
@@ -243,13 +269,14 @@
                 textColor: '#202124',
                 settingsBg: '#f0f0f0',
                 settingsTextColor: '#202124',
-                logoColor: '#4285f4',
+                logoColor: '#ffca8a',
                 logoShadow: '0 1px 2px rgba(0,0,0,0.1)'
             }
         };
 
         let currentTheme = 'Google Clone';
 
+        // Apply current theme
         function applyTheme(theme) {
             document.body.style.background = theme.bodyBg;
             document.body.style.color = theme.textColor;
@@ -263,11 +290,13 @@
             toggleButton.style.color = theme.settingsTextColor;
         }
 
+        // Toggle theme buttons visibility
         function toggleThemeButtons() {
             const themeButtons = document.getElementById('theme-buttons');
             themeButtons.style.display = themeButtons.style.display === 'none' || themeButtons.style.display === '' ? 'flex' : 'none';
         }
 
+        // Switch theme
         function switchTheme(themeName) {
             currentTheme = themeName;
             applyTheme(themes[currentTheme]);
@@ -275,21 +304,7 @@
 
         applyTheme(themes[currentTheme]);
 
-        function showResults(event) {
-            const results = document.getElementById('results');
-            const searchText = event.target.value.toLowerCase();
-            if (searchText) {
-                results.innerHTML = '<div class="result-item">Sample Result 1</div><div class="result-item">Sample Result 2</div>'; 
-                results.style.display = 'block';
-            } else {
-                results.style.display = 'none';
-            }
-        }
-
-        function search() {
-            alert('Search executed');
-        }
-
+        // Animated background setup
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
@@ -304,7 +319,6 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.fillStyle = themes[currentTheme].logoColor;
             ctx.font = `${fontSize}px monospace`;
 
@@ -321,8 +335,24 @@
 
             requestAnimationFrame(draw);
         }
-        
+
         draw();
+
+        // Handle displaying search results
+        function onResultsLoaded() {
+            const gcseResults = document.querySelector('.gsc-results-wrapper-visible');
+            if (gcseResults) {
+                document.querySelector('.gcse-searchresults').style.display = 'block';
+            } else {
+                document.querySelector('.gcse-searchresults').style.display = 'none';
+            }
+        }
+
+        window.__gcse = {
+            callback: onResultsLoaded
+        };
+
     </script>
 </body>
+
 </html>
