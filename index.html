@@ -3,280 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orange Cloud Search</title>
+    <title>Dynamic Theme Search</title>
     <style>
-        /* Default styles applied regardless of theme */
-        /* Removed default background and color from here to avoid conflict */
-        /* body {
-            font-family: 'Courier New', Courier, monospace;
+        body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             overflow: hidden;
-        } */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            position: relative;
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
 
-        .logo {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .logo img {
-            width: 100px;
-            height: auto;
-            margin-right: 20px;
-        }
-        .logo-text {
-            font-size: 40px;
-        }
-        .container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Removed: color: white; To be set by the theme */
-        }
-        .content {
-            display: flex;
-            width: 100%;
-            max-width: 1000px;
-        }
-        .main-section {
-            flex: 3;
-            padding: 20px;
-            margin-right: 20px;
-            box-sizing: border-box;
-            height: 500px;
-            overflow-y: auto;
-        }
-        .gcse-searchresults {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .side-section {
-            flex: 1;
-            height: 300px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            padding: 20px;
-        }
-        .theme-name {
-        margin: 10px;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        /* Background and color to be set dynamically by JS */
-    }
         canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0;
+        }
+
+        .logo {
+            font-size: 50px;
+            font-weight: bold;
+            color: #4285f4;
+            display: none;
             z-index: 1;
+        }
+        
+        .search-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            z-index: 1;
+        }
+        
+        .search-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 8px 12px;
+            box-shadow: none;
+            transition: box-shadow 0.2s;
+            z-index: 2;
+            background-color: #fff;
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            z-index: 2;
+        }
+        
+        .search-button {
+            border: none;
+            background-color: #f8f9fa;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 2;
+        }
+        
+        .search-button:hover {
+            background-color: #e8e8e8;
+        }
+
+        #results {
+            background: #fff;
+            color: #202124;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            overflow-y: auto;
+            max-height: 200px;
+            display: none; /* Initially should be hidden since there's no search */
+        }
+
+        .result-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        #toggle-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f0f0f0;
+            color: #202124;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .theme-buttons {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .theme-name {
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+            background: #f0f0f0;
+            color: #202124;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-name:hover {
+            background: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <!-- Canvas background for matrix effect -->
     <canvas id="matrix"></canvas>
-    
-    <!-- Logo section -->
-    <div class="logo">
-        <img src="Resources/My-meme-base.png" alt="Logo">
-        <div class="logo-text">Orange Cloud Search</div>
-    </div>
-
-    <!-- Main container -->
-    <div class="container">
-        <div class="content">
-            <div class="main-section">
-                <!-- Google Custom Search Engine integration -->
-                <script async src="https://cse.google.com/cse.js?cx=818b0291bd5164886"></script>
-                <div class="gcse-searchbox"></div>
-                <div class="gcse-searchresults"></div>
-            </div>
-            <div class="side-section"></div>
+    <div class="logo" id="logo">Google Clone</div>
+    <div class="search-container" id="search-container">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search Google or type a URL" oninput="showResults(event)">
+            <button class="search-button" onclick="search()">Google Search</button>
         </div>
+        <div id="results"></div>
     </div>
-
+    <button id="toggle-button" onclick="toggleThemeButtons()">Settings</button>
+    <div class="theme-buttons" id="theme-buttons">
+        <div class="theme-name" onclick="switchTheme('Golden Hour')">Golden Hour</div>
+        <div class="theme-name" onclick="switchTheme('Midnight')">Midnight</div>
+        <div class="theme-name" onclick="switchTheme('Synth Wave')">Synth Wave</div>
+        <div class="theme-name" onclick="switchTheme('Matrix')">Matrix</div>
+        <div class="theme-name" onclick="switchTheme('Miami Vibe')">Miami Vibe</div>
+        <div class="theme-name" onclick="switchTheme('Google Clone')">Google Clone</div>
+    </div>
     <script>
-        /** Theme Definitions **/
-
-        // Define themes as objects with respective styling properties
         const themes = {
-            // Golden Hour theme settings
             'Golden Hour': {
                 bodyBg: 'linear-gradient(135deg, #ffd180, #ff8a80)',
-                textColor: '#f7f1e3',
-                logoColor: '#ff5722',
-                logoShadow: '0 0 10px #ff3d00, 0 0 20px #ff3d00',
-                mainSectionBg: 'rgba(255, 193, 7, 0.8)',
-                sideSectionBg: 'rgba(255, 193, 7, 0.8)',
-                sideSectionBorder: '#ff5722',
-                gscCompletionTextColor: '#f7f1e3', // Match textColor for consistency
-                gscCompletionBg: '#663300',
-                gscCompletionHighlightBg: '#ff7043', // Highlight background
-                gscCompletionHighlightTextColor: '#000000'
+                textColor: '#202124',
+                showSearch: true,
+                showAnimation: true
             },
-            // Midnight theme settings
             'Midnight': {
                 bodyBg: 'black',
                 textColor: '#ffa500',
-                logoColor: '#ffaa77',
-                logoShadow: 'none',
-                mainSectionBg: 'rgba(0, 0, 0, 0.8)',
-                sideSectionBg: 'rgba(0, 0, 0, 0.8)',
-                sideSectionBorder: '#ffa500',
-                gscCompletionTextColor: '#ffa500', // Matches textColor for high contrast
-                gscCompletionBg: '#333333',
-                gscCompletionHighlightBg: '#005f73', // Teal color
-                gscCompletionHighlightTextColor: '#ffffff' // White for contrast
+                showSearch: true,
+                showAnimation: true
             },
-            // Synth Wave theme settings
             'Synth Wave': {
                 bodyBg: 'linear-gradient(135deg, #8e2de2, #4a00e0)',
-                textColor: '#ff00ff',
-                logoColor: '#00ffff',
-                logoShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff',
-                mainSectionBg: 'rgba(70, 0, 140, 0.8)',
-                sideSectionBg: 'rgba(70, 0, 140, 0.8)',
-                sideSectionBorder: '#ff00ff',
-                gscCompletionTextColor: '#ff00ff', // Consistent with textColor
-                gscCompletionBg: '#331144',
-                gscCompletionHighlightBg: '#ff1493', // Dark pink
-                gscCompletionHighlightTextColor: '#ffffff' // White for contrast
+                textColor: '#ffffff',
+                showSearch: true,
+                showAnimation: true
             },
-            // Matrix theme settings
             'Matrix': {
                 bodyBg: 'black',
                 textColor: '#00ff00',
-                logoColor: '#00ff00',
-                logoShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
-                mainSectionBg: 'rgba(0, 0, 0, 0.8)',
-                sideSectionBg: 'rgba(0, 0, 0, 0.8)',
-                sideSectionBorder: '#00ff00',
-                gscCompletionTextColor: '#00ff00', // Matches textColor for consistency
-                gscCompletionBg: '#001a00',
-                gscCompletionHighlightBg: '#003300', // Dark green
-                gscCompletionHighlightTextColor: '#ffffff' // White for contrast
+                showSearch: true,
+                showAnimation: true
             },
-            // Miami Vibe theme settings
             'Miami Vibe': {
                 bodyBg: 'linear-gradient(135deg, #50c9c3, #96deda)',
-                textColor: '#ff69b4',
-                logoColor: '#ff1493',
-                logoShadow: '0 0 10px #ff1493, 0 0 20px #ff1493',
-                mainSectionBg: 'rgba(80, 201, 195, 0.8)',
-                sideSectionBg: 'rgba(80, 201, 195, 0.8)',
-                sideSectionBorder: '#ff1493',
-                gscCompletionTextColor: '#ff69b4', // Matches textColor
-                gscCompletionBg: '#009688',
-                gscCompletionHighlightBg: '#ffcccb', // Light pink
-                gscCompletionHighlightTextColor: '#000000' // Black for contrast
+                textColor: '#202124',
+                showSearch: true,
+                showAnimation: true
+            },
+            'Google Clone': {
+                bodyBg: '#ffffff',
+                textColor: '#202124',
+                showSearch: true,
+                showAnimation: false
             }
         };
 
-        // Default theme
-        let currentTheme = 'Golden Hour';
+        const fakeDatabase = [
+            "Apple pie recipe",
+            "Banana smoothie",
+            "Cherry blossom festival",
+            "Date night ideas",
+            "Electric cars future",
+            "Famous landmarks to visit",
+            "Gourmet food recipes",
+            "Healthy eating tips",
+            "Interior design trends",
+            "Japanese sushi making"
+        ];
 
-        // Apply selected theme styling
-        function applyTheme(theme) {
+        function switchTheme(themeName) {
+            const theme = themes[themeName];
             document.body.style.background = theme.bodyBg;
             document.body.style.color = theme.textColor;
+            const logoElement = document.getElementById('logo');
+            const searchContainer = document.getElementById('search-container');
+            const toggleButton = document.getElementById('toggle-button');
+            const results = document.getElementById('results');
+            const canvas = document.getElementById('matrix');
+            
+            document.documentElement.style.setProperty('--text-color', theme.textColor);
 
-            const logo = document.querySelector('.logo-text');
-            logo.style.color = theme.logoColor;
-            logo.style.textShadow = theme.logoShadow;
-
-            const mainSection = document.querySelector('.main-section');
-            mainSection.style.backgroundColor = theme.mainSectionBg;
-
-            const sideSection = document.querySelector('.side-section');
-            sideSection.style.backgroundColor = theme.sideSectionBg;
-            sideSection.style.border = `2px solid ${theme.sideSectionBorder}`;
-
-            // Update theme names to reflect current theme
-            const themeNames = document.querySelectorAll('.theme-name');
-            themeNames.forEach(themeName => {
-            themeName.style.background = theme.mainSectionBg;
-            themeName.style.color = theme.textColor;
-            });
-
-            const gscContainer = document.querySelector('.gsc-completion-container');
-            if (gscContainer) {
-                gscContainer.style.color = theme.gscCompletionTextColor;
-                gscContainer.style.backgroundColor = theme.gscCompletionBg;
+            if (theme.showAnimation) {
+                document.body.style.animation = 'gradient 15s ease infinite';
+                canvas.style.display = 'block';
+            } else {
+                document.body.style.animation = 'none';
+                canvas.style.display = 'none';
             }
-
-            // Apply highlight styles for better readability
-            const highlights = document.querySelectorAll('.gsc-completion-container .gsc-completion-selected');
-            highlights.forEach(highlight => {
-                highlight.style.backgroundColor = theme.gscCompletionHighlightBg;
-                highlight.style.color = theme.gscCompletionHighlightTextColor;
-            });
+            
+            logoElement.style.display = 'block';
+            searchContainer.style.display = theme.showSearch ? 'flex' : 'none';
+            results.style.display = theme.showSearch ? 'block' : 'none';
+            toggleButton.style.display = 'block';
         }
 
-        // Setup clickable theme selector interface
-        function setupThemeSwitcher() {
-            const sideSection = document.querySelector('.side-section');
-            Object.keys(themes).forEach(themeName => {
-                // Create clickable element for each theme
-                const themeElement = document.createElement('div');
-                themeElement.className = 'theme-name';
-                themeElement.innerText = themeName;
-                themeElement.onclick = () => switchTheme(themeName);
-                sideSection.appendChild(themeElement);
-            });
+        function toggleThemeButtons() {
+            const themeButtons = document.getElementById('theme-buttons');
+            themeButtons.style.display = themeButtons.style.display === 'none' || themeButtons.style.display === '' ? 'flex' : 'none';
         }
 
-        // Update current theme and apply new styles
-        function switchTheme(themeName) {
-            currentTheme = themeName;
-            applyTheme(themes[currentTheme]);
+        function showResults(event) {
+            const results = document.getElementById('results');
+            const searchText = event.target.value.toLowerCase();
+            if (searchText) {
+                const filteredResults = fakeDatabase.filter(item => item.toLowerCase().includes(searchText));
+                if (filteredResults.length > 0) {
+                    results.style.display = 'block';
+                    results.innerHTML = filteredResults.map(item => `<div class="result-item">${item}</div>`).join('');
+                } else {
+                    results.innerHTML = '<div class="result-item">No results found</div>';
+                }
+            } else {
+                results.style.display = 'none';
+            }
         }
 
-        /** Initial setup and matrix effect **/
-
-        // Initial theme application and setup the theme switcher
-        applyTheme(themes[currentTheme]);
-        setupThemeSwitcher();
-
-        // Function returns the current theme color for canvas text effect
-        function getMatrixColor() {
-            return themes[currentTheme].logoColor;
+        function search() {
+            // In a real-world scenario, you would perform a search with an API call here
+            alert('Search executed');
         }
 
-        // Initialize canvas for matrix falling effect
+        // Setup matrix effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas dimensions to cover full window size
+        // Set canvas size to match the window
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Characters used in matrix effect
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 16;
         const columns = canvas.width / fontSize;
-
-        // Initialize array to track drop positions for each column
         const drops = Array.from({ length: columns }).fill(1);
 
-        // Function to render matrix effect
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Slight clearing effect to create trail effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = getMatrixColor(); // Set text color based on current theme
-            ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle = '#00ff00';
+            ctx.font = `${fontSize}px monospace`;
 
             drops.forEach((y, i) => {
                 const text = letters[Math.floor(Math.random() * letters.length)];
@@ -289,12 +315,13 @@
                 drops[i] += 0.5;
             });
 
-            // Recursively call draw function for continuous animation
             requestAnimationFrame(draw);
         }
-
-        // Start the matrix display animation
+        
         draw();
+
+        // Initially apply a default theme
+        switchTheme('Golden Hour');
     </script>
 </body>
 </html>
