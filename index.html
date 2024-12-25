@@ -35,12 +35,24 @@
             z-index: 0;
         }
 
+        .logo-container {
+            display: flex;
+            align-items: center;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
         .logo {
             font-size: 50px;
             font-weight: bold;
             color: #4285f4;
-            display: none;
-            z-index: 1;
+            display: block;
         }
         
         .search-container {
@@ -103,7 +115,7 @@
             z-index: 1;
             overflow-y: auto;
             max-height: 200px;
-            display: none; /* Initially should be hidden since there's no search */
+            display: none;
         }
 
         .result-item {
@@ -162,7 +174,10 @@
 </head>
 <body>
     <canvas id="matrix"></canvas>
-    <div class="logo" id="logo">Google Clone</div>
+    <div class="logo-container">
+        <img src="Resources/My-meme-base.png" alt="Logo">
+        <div class="logo" id="logo">Google Clone</div>
+    </div>
     <div class="search-container" id="search-container">
         <div class="search-box">
             <input type="text" class="search-input" placeholder="Search Google or type a URL" oninput="showResults(event)">
@@ -236,9 +251,7 @@
             const theme = themes[themeName];
             document.body.style.background = theme.bodyBg;
             document.body.style.color = theme.textColor;
-            const logoElement = document.getElementById('logo');
             const searchContainer = document.getElementById('search-container');
-            const toggleButton = document.getElementById('toggle-button');
             const results = document.getElementById('results');
             const canvas = document.getElementById('matrix');
             
@@ -252,10 +265,8 @@
                 canvas.style.display = 'none';
             }
             
-            logoElement.style.display = 'block';
             searchContainer.style.display = theme.showSearch ? 'flex' : 'none';
             results.style.display = theme.showSearch ? 'block' : 'none';
-            toggleButton.style.display = 'block';
         }
 
         function toggleThemeButtons() {
